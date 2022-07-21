@@ -1,0 +1,83 @@
+class Solution
+{
+	public:
+    //Function to check every 3x3 box in the board for duplicate values.
+	bool boxCheck(vector<vector < char>> &board, int r, int c)
+	{
+		multiset<char> bs;
+		for (int i = r; i <= r + 2; i++){
+			for (int j = c; j <= c + 2; j++){
+				char c = board[i][j];
+				if (c != '.')
+				{
+					if (bs.find(c) != bs.end())
+						return false;
+					else
+						bs.insert(c);
+				}
+			}
+		}
+
+		return true;
+	}
+    //Function to check every row in the board for duplicate values.
+	bool check1(vector<vector < char>> &board, int fixed)
+	{
+		multiset<char> msr;
+		for (int k = 0; k < 9; k++){
+			char val = board[fixed][k];
+			if (val != '.'){
+				if (msr.find(val) != msr.end())
+					return false;
+				else
+					msr.insert(val);
+			}
+		}
+
+		return true;
+	}
+//Function to check every column in the board for duplicate values.
+	bool check2(vector<vector < char>> &board, int fixed)
+	{
+		multiset<char> msr;
+		for (int k = 0; k < 9; k++)
+		{
+			char val = board[k][fixed];
+			if (val != '.')
+			{
+				if (msr.find(val) != msr.end())
+					return false;
+				else
+					msr.insert(val);
+			}
+		}
+
+		return true;
+	}
+
+	bool isValidSudoku(vector<vector < char>> &board)
+	{
+        //First checking the duplicate values in all rows of the board
+		for (int i = 0; i < 9; i++)
+		{
+			if (check1(board,i) == false)   return false;
+		}
+        
+        // checking the duplicate values in all columns of the board
+		for (int j = 0; j < 9; j++)
+		{
+			if (check2(board,j) == false)   return false;
+		}
+
+        //At last, checking all 3x3 values for duplicate results.
+		for (int i = 0; i < 9; i = i + 3)
+		{
+			for (int j = 0; j < 9; j = j + 3)
+			{
+				if (boxCheck(board,i,j) == false)  return false;
+			}
+		}
+
+		return true;
+	}
+};
